@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सोशल पोस्ट जनरेटर - AI Powered</title>
+    <meta name="description" content="AI से सोशल मीडिया पोस्ट जनरेट करें - टाइटल, कैप्शन और हैशटैग">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="logo-text">पोस्टजन</div>
+                </div>
+                <div class="user-actions">
+                    <button class="btn btn-outline" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </button>
+                    <button class="btn btn-primary" id="signup-btn">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Generator Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-magic"></i>
+                        पोस्ट जनरेट करें
+                    </h2>
+                    <div class="counter" id="generation-counter">0/10</div>
+                </div>
+
+                <!-- API Status -->
+                <div class="api-status connected" id="api-status">
+                    <i class="fas fa-check-circle"></i>
+                    सिस्टम तैयार है - पोस्ट जनरेट करें!
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">पोस्ट का विषय *</label>
+                    <input type="text" class="form-control" id="post-topic" placeholder="उदाहरण: स्वस्थ जीवनशैली, टेक्नोलॉजी, यात्रा...">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">टोन चुनें</label>
+                    <div class="select-wrapper">
+                        <select class="form-control" id="post-tone">
+                            <option value="professional">प्रोफेशनल</option>
+                            <option value="casual">कैजुअल</option>
+                            <option value="funny">मजेदार</option>
+                            <option value="inspirational">प्रेरणादायक</option>
+                            <option value="educational">शैक्षिक</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">प्लेटफॉर्म चुनें</label>
+                    <div class="platforms">
+                        <div class="platform-option active" data-platform="instagram">
+                            <i class="fab fa-instagram platform-icon"></i>
+                            <span class="platform-name">Instagram</span>
+                        </div>
+                        <div class="platform-option active" data-platform="facebook">
+                            <i class="fab fa-facebook platform-icon"></i>
+                            <span class="platform-name">Facebook</span>
+                        </div>
+                        <div class="platform-option" data-platform="twitter">
+                            <i class="fab fa-twitter platform-icon"></i>
+                            <span class="platform-name">Twitter</span>
+                        </div>
+                        <div class="platform-option" data-platform="youtube">
+                            <i class="fab fa-youtube platform-icon"></i>
+                            <span class="platform-name">YouTube</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">पोस्ट लंबाई</label>
+                    <div class="select-wrapper">
+                        <select class="form-control" id="post-length">
+                            <option value="short">छोटा (50-100 शब्द)</option>
+                            <option value="medium" selected>मध्यम (100-200 शब्द)</option>
+                            <option value="long">लंबा (200+ शब्द)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-full" id="generate-btn">
+                    <i class="fas fa-bolt"></i>
+                    पोस्ट जनरेट करें
+                </button>
+                
+                <div class="loading" id="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>आपकी पोस्ट जनरेट की जा रही है...</p>
+                </div>
+            </div>
+            
+            <!-- Preview Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-eye"></i>
+                        पोस्ट प्रिव्यू
+                    </h2>
+                </div>
+                
+                <div class="preview-container">
+                    <div class="preview-header">
+                        <div class="preview-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="preview-user">
+                            <div class="preview-username">आपका प्रोफाइल</div>
+                            <div class="preview-time">अभी</div>
+                        </div>
+                        <i class="fas fa-ellipsis-h" style="color: white;"></i>
+                    </div>
+                    
+                    <div class="preview-content">
+                        <div class="preview-image">
+                            <i class="fas fa-image"></i>
+                            <span style="margin-left: 8px;">पोस्ट इमेज</span>
+                        </div>
+                        
+                        <div class="preview-title" id="preview-title">आपकी जनरेट की गई पोस्ट यहाँ दिखाई देगी</div>
+                        <div class="preview-caption" id="preview-caption">पोस्ट जनरेट करने के लिए ऊपर फॉर्म भरें और "पोस्ट जनरेट करें" बटन पर क्लिक करें।</div>
+                        <div class="preview-hashtags" id="preview-hashtags">#उदाहरण #हैशटैग</div>
+                    </div>
+                    
+                    <div class="preview-actions">
+                        <div class="preview-action">
+                            <i class="far fa-heart"></i>
+                            <span>पसंद</span>
+                        </div>
+                        <div class="preview-action">
+                            <i class="far fa-comment"></i>
+                            <span>टिप्पणी</span>
+                        </div>
+                        <div class="preview-action">
+                            <i class="far fa-share-square"></i>
+                            <span>शेयर</span>
+                        </div>
+                        <div class="preview-action">
+                            <i class="far fa-bookmark"></i>
+                            <span>सेव</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-success" id="copy-btn">
+                        <i class="fas fa-copy"></i>
+                        कॉपी करें
+                    </button>
+                    <button class="btn btn-secondary" id="save-btn">
+                        <i class="fas fa-save"></i>
+                        सेव करें
+                    </button>
+                    <button class="btn btn-outline" id="regenerate-btn">
+                        <i class="fas fa-redo"></i>
+                        फिर से जनरेट
+                    </button>
+                </div>
+            </div>
+            
+            <!-- History Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-history"></i>
+                        आपका इतिहास
+                    </h2>
+                </div>
+                
+                <div class="history-list" id="history-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <p>अभी तक कोई पोस्ट जनरेट नहीं की गई है</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item active">
+            <i class="fas fa-home nav-icon"></i>
+            <span>होम</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-history nav-icon"></i>
+            <span>इतिहास</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-plus-circle nav-icon"></i>
+            <span>बनाएं</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-user nav-icon"></i>
+            <span>प्रोफाइल</span>
+        </div>
+    </nav>
+    
+    <!-- Login/Signup Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">अपना अकाउंट</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="login">लॉग इन</div>
+                <div class="tab" data-tab="signup">साइन अप</div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="tab-content active" id="login-tab">
+                    <div class="form-group">
+                        <label class="form-label">ईमेल</label>
+                        <input type="email" class="form-control" id="login-email" placeholder="आपका ईमेल">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">पासवर्ड</label>
+                        <input type="password" class="form-control" id="login-password" placeholder="आपका पासवर्ड">
+                    </div>
+                    <button class="btn btn-primary btn-full" id="login-submit">लॉग इन</button>
+                </div>
+                
+                <div class="tab-content" id="signup-tab">
+                    <div class="form-group">
+                        <label class="form-label">नाम</label>
+                        <input type="text" class="form-control" id="signup-name" placeholder="आपका पूरा नाम">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ईमेल</label>
+                        <input type="email" class="form-control" id="signup-email" placeholder="आपका ईमेल">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">पासवर्ड</label>
+                        <input type="password" class="form-control" id="signup-password" placeholder="मजबूत पासवर्ड">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">पासवर्ड की पुष्टि करें</label>
+                        <input type="password" class="form-control" id="signup-confirm-password" placeholder="पासवर्ड फिर से दर्ज करें">
+                    </div>
+                    <button class="btn btn-primary btn-full" id="signup-submit">साइन अप</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
